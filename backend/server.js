@@ -1,10 +1,28 @@
 const express = require('express')
 const workoutRoutes = require('./routes/workouts')
+const mongoose = require('mongoose')
 require('dotenv').config()
 const app = express()
 
 // ===================================
-// middleware
+// Database
+// ===================================
+const connectDatabase = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI)
+    console.log('connected to DB')
+    app.listen(process.env.PORT, () => {
+      console.log(`listening on port ${process.env.PORT}`)
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+connectDatabase()
+
+// ===================================
+// Middleware
 // ===================================
 
 app.use(express.json()) // parse request body as JSON
@@ -15,15 +33,11 @@ app.use((req, res, next) => {
 })
 
 // ===================================
-// routes
+// Routes
 // ===================================
 
 app.use('/api/workouts', workoutRoutes)
 
 // ===================================
-// listen for requests
+// Listen for requests
 // ===================================
-
-app.listen(process.env.PORT, () => {
-  console.log(`listening on port ${process.env.PORT}`)
-})
