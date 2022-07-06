@@ -23,7 +23,6 @@ connectDatabase()
 // ===================================
 // Middleware
 // ===================================
-
 app.use(express.json()) // parse request body as JSON
 app.use((req, res, next) => {
   // console log req path and method
